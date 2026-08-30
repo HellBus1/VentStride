@@ -1,11 +1,10 @@
 const NavbarRouteName = {
-  PROFILE: '/profile',
   HOME: '/',
   ABOUT: '/about'
-}
+} as const
 
 const RouteName = {
   ...NavbarRouteName
-}
+} as const
 
 export { NavbarRouteName, RouteName }
