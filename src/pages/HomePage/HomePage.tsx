@@ -1,8 +1,14 @@
 import { useState, useRef } from 'react'
-import { ActivityInput, CardConfig, CardRatio, CardTheme, CardDesign, LayoutPreset } from '@/types'
+import {
+  ActivityInput,
+  CardConfig,
+  CardRatio,
+  CardOrientation,
+  CardTheme,
+  CardDesign
+} from '@/types'
 import { DEFAULT_ACCENT } from '@/constants/accentColors'
 import ActivityForm from '@/components/ActivityForm/ActivityForm'
-import LayoutPresetPicker from '@/components/LayoutPresetPicker/LayoutPresetPicker'
 import AccentPicker from '@/components/AccentPicker/AccentPicker'
 import RatioPicker from '@/components/RatioPicker/RatioPicker'
 import ThemePicker from '@/components/ThemePicker/ThemePicker'
@@ -10,6 +16,7 @@ import DesignPicker from '@/components/DesignPicker/DesignPicker'
 import CardPreview, { CardPreviewHandle } from '@/components/CardPreview/CardPreview'
 import ExportButtons from '@/components/ExportButtons/ExportButtons'
 import { getCardDimensions } from '@/lib/cardRenderer'
+import { Sparkle } from '@phosphor-icons/react'
 
 export const HomePage = () => {
   const todayStr = new Date().toISOString().split('T')[0]
@@ -25,21 +32,21 @@ export const HomePage = () => {
   })
 
   const [cardConfig, setCardConfig] = useState<CardConfig>({
-    layoutPreset: 'essential',
-    visibleStats: ['distance', 'pace', 'movingTime'],
     accentColor: DEFAULT_ACCENT,
     ratio: '9:16',
+    orientation: 'vertical',
     theme: 'overlay',
-    design: 'stacked',
-    customWidth: 1080,
-    customHeight: 1920,
-    lockAspectRatio: true
+    design: 'stacked'
   })
 
   const cardPreviewRef = useRef<CardPreviewHandle>(null)
 
   const handleRatioChange = (ratio: CardRatio) => {
     setCardConfig((prev) => ({ ...prev, ratio }))
+  }
+
+  const handleOrientationChange = (orientation: CardOrientation) => {
+    setCardConfig((prev) => ({ ...prev, orientation }))
   }
 
   const handleThemeChange = (theme: CardTheme) => {
@@ -50,19 +57,8 @@ export const HomePage = () => {
     setCardConfig((prev) => ({
       ...prev,
       design,
-      layoutPreset: design === 'grid' ? 'detailed' : prev.layoutPreset
-    }))
-  }
-
-  const handlePresetChange = (preset: LayoutPreset) => {
-    setCardConfig((prev) => ({
-      ...prev,
-      layoutPreset: preset,
-      design: preset === 'detailed' ? 'grid' : prev.design,
-      visibleStats:
-        preset === 'essential'
-          ? ['distance', 'pace', 'movingTime']
-          : ['distance', 'pace', 'movingTime', 'elevationGain', 'maxElevation', 'calories']
+      orientation:
+        design === 'stacked' ? 'vertical' : design === 'grid' ? 'horizontal' : prev.orientation
     }))
   }
 
@@ -73,75 +69,62 @@ export const HomePage = () => {
   const { w, h } = getCardDimensions(cardConfig)
 
   return (
-    <div className='w-full min-h-[calc(100dvh-3.5rem)] bg-[#FBFBFA] py-8 sm:py-12 px-4 sm:px-6 lg:px-8'>
+    <div className='w-full bg-[#FBFBFA] py-6 sm:py-10 px-4 sm:px-6 lg:px-8'>
       <div className='max-w-6xl mx-auto'>
-        {/* Split Studio Layout */}
-        <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start'>
-          {/* Left Column: Form Controls (~45% / 5 cols) */}
-          <div className='lg:col-span-5 flex flex-col gap-5'>
-            {/* Header */}
+        {/* Mobile & Desktop Responsive Layout */}
+        <div className='grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start'>
+          {/* Form Controls Column (Top on mobile, Left on desktop) */}
+          <div className='order-2 lg:order-1 lg:col-span-5 flex flex-col gap-4 sm:gap-5'>
+            {/* Headline */}
             <div className='flex flex-col gap-1'>
+              <div className='flex items-center gap-1.5 text-xs font-bold text-[#E8590C] uppercase tracking-wider'>
+                <Sparkle size={14} weight='fill' />
+                <span>Instagram Story Studio</span>
+              </div>
               <h1 className='text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight'>
-                Activity Card Studio
+                Turn your run into a shareable sticker.
               </h1>
               <p className='text-xs sm:text-sm text-neutral-500 leading-relaxed'>
-                Generate high-resolution transparent overlays and share cards for Instagram Stories
-                & social media.
+                Generate crisp transparent overlays and cards for Instagram Stories & social media.
               </p>
             </div>
 
-            {/* Theme Picker */}
+            {/* 1. Theme Picker (Overlay / Classic / Clean) */}
             <div className='p-4 bg-white border border-neutral-200/90 rounded-2xl shadow-xs'>
               <ThemePicker theme={cardConfig.theme} onChange={handleThemeChange} />
             </div>
 
-            {/* Design Style Picker */}
+            {/* 2. Card Design Layout (Stacked Hero / Grid Matrix / Bottom Overlay) */}
             <div className='p-4 bg-white border border-neutral-200/90 rounded-2xl shadow-xs'>
               <DesignPicker design={cardConfig.design} onChange={handleDesignChange} />
             </div>
 
-            {/* Ratio & Resizing Picker */}
+            {/* 3. Aspect Ratio (9:16 & 3:4) */}
             <div className='p-4 bg-white border border-neutral-200/90 rounded-2xl shadow-xs'>
               <RatioPicker
-                ratio={cardConfig.ratio}
-                customWidth={cardConfig.customWidth}
-                customHeight={cardConfig.customHeight}
-                lockAspectRatio={cardConfig.lockAspectRatio}
+                config={cardConfig}
                 onRatioChange={handleRatioChange}
-                onWidthChange={(w) => setCardConfig((prev) => ({ ...prev, customWidth: w }))}
-                onHeightChange={(h) => setCardConfig((prev) => ({ ...prev, customHeight: h }))}
-                onLockToggle={(locked) =>
-                  setCardConfig((prev) => ({ ...prev, lockAspectRatio: locked }))
-                }
+                onOrientationChange={handleOrientationChange}
               />
             </div>
 
-            {/* Stats Preset (Essential / Detailed) */}
-            <div className='p-4 bg-white border border-neutral-200/90 rounded-2xl shadow-xs'>
-              <LayoutPresetPicker preset={cardConfig.layoutPreset} onChange={handlePresetChange} />
-            </div>
-
-            {/* Accent Color */}
+            {/* 4. Accent Color Swatches */}
             <div className='p-4 bg-white border border-neutral-200/90 rounded-2xl shadow-xs'>
               <AccentPicker selectedHex={cardConfig.accentColor} onChange={handleAccentChange} />
             </div>
 
-            {/* Activity Form */}
+            {/* 5. Workout Data Form */}
             <div className='p-4 bg-white border border-neutral-200/90 rounded-2xl shadow-xs'>
               <div className='flex items-center justify-between mb-3'>
-                <span className='text-xs font-bold uppercase tracking-wider text-neutral-500'>
+                <span className='text-xs font-bold uppercase tracking-wider text-neutral-600'>
                   Workout Statistics
                 </span>
-                <span className='text-[11px] text-neutral-400'>Live sync</span>
+                <span className='text-[11px] text-green-600 font-medium'>Live Preview</span>
               </div>
-              <ActivityForm
-                activity={activity}
-                onChange={setActivity}
-                preset={cardConfig.layoutPreset}
-              />
+              <ActivityForm activity={activity} design={cardConfig.design} onChange={setActivity} />
             </div>
 
-            {/* Export Actions */}
+            {/* 6. Export Actions */}
             <div className='p-4 bg-white border border-neutral-200/90 rounded-2xl shadow-xs'>
               <ExportButtons
                 cardPreviewRef={cardPreviewRef}
@@ -151,28 +134,28 @@ export const HomePage = () => {
             </div>
           </div>
 
-          {/* Right Column: Live Card Canvas Preview (~55% / 7 cols) */}
-          <div className='lg:col-span-7 flex flex-col items-center justify-start lg:sticky lg:top-20'>
-            <div className='w-full flex items-center justify-between px-1 mb-2'>
+          {/* Live Card Preview Column (Sticky on desktop, top view on mobile) */}
+          <div className='order-1 lg:order-2 lg:col-span-7 flex flex-col items-center justify-start lg:sticky lg:top-20'>
+            <div className='w-full flex items-center justify-between px-1 mb-2.5'>
               <div className='flex items-center gap-2'>
                 <span className='w-2 h-2 rounded-full bg-green-500 animate-pulse' />
                 <span className='text-xs font-bold uppercase tracking-wider text-neutral-600'>
                   Live Canvas Preview
                 </span>
               </div>
-              <span className='text-[11px] font-mono text-neutral-400 font-medium'>
+              <span className='text-[11px] font-mono text-neutral-500 font-semibold bg-neutral-200/60 px-2 py-0.5 rounded'>
                 {w} × {h} px
               </span>
             </div>
 
-            {/* Interactive Canvas Card */}
+            {/* Live Canvas Component */}
             <CardPreview ref={cardPreviewRef} activity={activity} config={cardConfig} />
 
-            {/* Helpful instructions */}
-            <p className='mt-3 text-xs text-neutral-400 text-center max-w-md'>
+            {/* Guidance note */}
+            <p className='mt-2.5 text-[11px] text-neutral-400 text-center max-w-sm px-2'>
               {cardConfig.theme === 'overlay'
-                ? 'Checkerboard shows transparency. Click Download PNG to get a clean sticker overlay ready for Instagram Stories.'
-                : 'Rendered with bold athletic typography for crisp social sharing.'}
+                ? 'Checkerboard shows transparency. When exported as PNG, drop it directly over your workout photo on Instagram Stories.'
+                : 'Full card rendered at clean resolution for social media.'}
             </p>
           </div>
         </div>
