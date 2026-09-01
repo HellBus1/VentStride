@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar/Navbar'
 
 const Root = () => {
   return (
-    <div className='min-h-[100dvh] bg-[#10140F] text-[#E8E4D9] flex flex-col'>
+    <div className='min-h-[100dvh] bg-white text-neutral-900 flex flex-col'>
       <Navbar />
       <main className='flex-1 w-full'>
         <Outlet />

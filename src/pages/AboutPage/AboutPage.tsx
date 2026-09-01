@@ -4,100 +4,88 @@ import { ArrowLeft, Sparkle, ShieldCheck, Lightning } from '@phosphor-icons/reac
 
 export const AboutPage = () => {
   return (
-    <div className='w-full min-h-[calc(100dvh-4rem)] bg-[#10140F] py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8'>
-      <div className='max-w-3xl mx-auto flex flex-col gap-12'>
+    <div className='w-full min-h-[calc(100dvh-3.5rem)] bg-white py-10 sm:py-16 px-4 sm:px-6 lg:px-8'>
+      <div className='max-w-2xl mx-auto flex flex-col gap-10'>
         {/* Back Link */}
         <div>
           <Link
             to={RouteName.HOME}
-            className='inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#8A9986] hover:text-[#E8E4D9] transition-colors'
+            className='inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-neutral-500 hover:text-neutral-900 transition-colors'
           >
-            <ArrowLeft size={16} />
+            <ArrowLeft size={15} />
             <span>Back to Studio</span>
           </Link>
         </div>
 
         {/* Header */}
-        <div className='flex flex-col gap-4'>
-          <span className='text-xs font-semibold uppercase tracking-[0.2em] text-[#DDB967]'>
+        <div className='flex flex-col gap-2'>
+          <span className='text-xs font-semibold uppercase tracking-wider text-[#E8590C]'>
             About VentStride
           </span>
-          <h1 className='text-4xl sm:text-5xl lg:text-6xl font-serif font-semibold text-[#E8E4D9] tracking-tight leading-[1.08]'>
-            Shareable stat cards without the paywall.
+          <h1 className='text-3xl sm:text-4xl font-serif font-bold text-neutral-900 tracking-tight'>
+            Shareable workout stats without subscriptions.
           </h1>
-          <p className='text-base sm:text-lg text-[#8A9986] leading-relaxed'>
-            VentStride is a focused utility created for runners, cyclists, and athletes who want
-            clean, on-brand activity share cards for social media.
+          <p className='text-base text-neutral-600 leading-relaxed mt-1'>
+            VentStride was built for runners, cyclists, and athletes who want clean, on-brand
+            activity share cards and transparent overlays for social media.
           </p>
         </div>
 
-        {/* Content Section: Why VentStride exists */}
-        <div className='flex flex-col gap-8 pt-6 border-t border-[#2A3828]'>
-          <div className='flex flex-col gap-3'>
-            <h2 className='text-2xl font-serif font-semibold text-[#E8E4D9]'>The Problem</h2>
-            <p className='text-sm sm:text-base text-[#8A9986] leading-relaxed'>
-              Strava is great for logging workouts, but many of its native share stickers and
-              templates are locked behind paid subscriptions. VentStride lets you enter your
-              activity numbers and generate a clean, story-ready 9:16 visual in seconds.
-            </p>
-          </div>
-
-          {/* Pillars */}
-          <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4'>
-            <div className='p-5 bg-[#151C14] border border-[#2A3828] rounded-2xl flex flex-col gap-3'>
-              <div className='w-9 h-9 rounded-xl bg-[#1A2318] border border-[#2A3828] flex items-center justify-center text-[#DDB967]'>
-                <Lightning size={20} weight='fill' />
+        {/* Features / Why */}
+        <div className='flex flex-col gap-6 pt-6 border-t border-neutral-200'>
+          <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
+            <div className='p-4 bg-neutral-50 border border-neutral-200 rounded-xl flex flex-col gap-2'>
+              <div className='w-8 h-8 rounded-lg bg-white border border-neutral-200 flex items-center justify-center text-[#E8590C]'>
+                <Lightning size={18} weight='fill' />
               </div>
-              <h3 className='text-base font-semibold text-[#E8E4D9]'>Zero Friction</h3>
-              <p className='text-xs text-[#8A9986] leading-relaxed'>
-                No sign-up, no login, no cookies. Open the page, input your stats, and export
-                immediately.
+              <h3 className='text-sm font-semibold text-neutral-900'>No Account</h3>
+              <p className='text-xs text-neutral-500 leading-relaxed'>
+                Zero friction. Open the tool, type your numbers, and download your card immediately.
               </p>
             </div>
 
-            <div className='p-5 bg-[#151C14] border border-[#2A3828] rounded-2xl flex flex-col gap-3'>
-              <div className='w-9 h-9 rounded-xl bg-[#1A2318] border border-[#2A3828] flex items-center justify-center text-[#DDB967]'>
-                <Sparkle size={20} weight='fill' />
+            <div className='p-4 bg-neutral-50 border border-neutral-200 rounded-xl flex flex-col gap-2'>
+              <div className='w-8 h-8 rounded-lg bg-white border border-neutral-200 flex items-center justify-center text-[#E8590C]'>
+                <Sparkle size={18} weight='fill' />
               </div>
-              <h3 className='text-base font-semibold text-[#E8E4D9]'>Curated Aesthetics</h3>
-              <p className='text-xs text-[#8A9986] leading-relaxed'>
-                Deep moss canvas, distinctive serif numbers, and hand-selected color swatches tuned
-                for Instagram and TikTok.
+              <h3 className='text-sm font-semibold text-neutral-900'>Multiple Formats</h3>
+              <p className='text-xs text-neutral-500 leading-relaxed'>
+                Export in 9:16 Story, 3:4 Portrait, 1:1 Square, or 16:9 Wide with transparent or
+                styled backgrounds.
               </p>
             </div>
 
-            <div className='p-5 bg-[#151C14] border border-[#2A3828] rounded-2xl flex flex-col gap-3'>
-              <div className='w-9 h-9 rounded-xl bg-[#1A2318] border border-[#2A3828] flex items-center justify-center text-[#DDB967]'>
-                <ShieldCheck size={20} weight='fill' />
+            <div className='p-4 bg-neutral-50 border border-neutral-200 rounded-xl flex flex-col gap-2'>
+              <div className='w-8 h-8 rounded-lg bg-white border border-neutral-200 flex items-center justify-center text-[#E8590C]'>
+                <ShieldCheck size={18} weight='fill' />
               </div>
-              <h3 className='text-base font-semibold text-[#E8E4D9]'>100% Client-Side</h3>
-              <p className='text-xs text-[#8A9986] leading-relaxed'>
-                Your activity data stays in your browser. All SVG rendering and PNG exports happen
-                on your machine.
+              <h3 className='text-sm font-semibold text-neutral-900'>100% Private</h3>
+              <p className='text-xs text-neutral-500 leading-relaxed'>
+                Everything runs in your browser via HTML Canvas. No workout data is stored or sent
+                to a server.
               </p>
             </div>
           </div>
 
-          {/* Technical Pipeline */}
-          <div className='p-6 bg-[#151C14] border border-[#2A3828] rounded-2xl flex flex-col gap-3'>
-            <h3 className='text-sm font-semibold uppercase tracking-wider text-[#8A9986]'>
-              Under The Hood
+          <div className='p-5 bg-neutral-50 border border-neutral-200 rounded-xl flex flex-col gap-2'>
+            <h3 className='text-xs font-semibold uppercase tracking-wider text-neutral-500'>
+              How to use the Transparent Overlay
             </h3>
-            <p className='text-xs sm:text-sm text-[#8A9986] leading-relaxed'>
-              Cards are rendered as native vector SVGs in a 1080 × 1920 viewport. When you export,
-              typography rules are embedded and rendered via HTML5 canvas to produce crisp 300 DPI
-              PNGs ready for instant sharing.
+            <p className='text-xs sm:text-sm text-neutral-600 leading-relaxed'>
+              Download the PNG with the <strong>Overlay</strong> theme selected. Open Instagram
+              Stories, pick the photo you took during your workout, tap the sticker button, select
+              the photo sticker, and pick the downloaded PNG. The stats will float cleanly over your
+              picture.
             </p>
           </div>
 
-          {/* CTA back to studio */}
-          <div className='pt-4 flex items-center justify-between'>
-            <span className='text-xs text-[#5A6856]'>VentStride v0.1 MVP</span>
+          <div className='pt-2 flex items-center justify-between'>
+            <span className='text-xs text-neutral-400'>VentStride v0.2</span>
             <Link
               to={RouteName.HOME}
-              className='px-5 py-2.5 rounded-xl bg-[#DDB967] text-[#10140F] text-xs font-semibold hover:brightness-110 transition-all shadow-md'
+              className='px-4 py-2 rounded-lg bg-neutral-900 text-white text-xs font-semibold hover:bg-neutral-800 transition-all'
             >
-              Open Studio
+              Open Generator
             </Link>
           </div>
         </div>

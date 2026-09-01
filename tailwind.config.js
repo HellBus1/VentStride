@@ -6,22 +6,8 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        brand: {
-          bg: '#10140F',
-          card: '#151C14',
-          surface: '#1A2318',
-          border: '#2A3828',
-          text: '#E8E4D9',
-          muted: '#8A9986',
-          subtle: '#5A6856',
-          gold: '#DDB967',
-          moss: '#4A5D45',
-        }
-      },
       fontFamily: {
-        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-        sans: ['"General Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
       },
     },
   },
@@ -31,25 +17,24 @@ export default {
     themes: [
       {
         ventstride: {
-          "primary": "#DDB967",
-          "primary-content": "#10140F",
-          "secondary": "#4A5D45",
-          "secondary-content": "#E8E4D9",
-          "accent": "#DDB967",
-          "neutral": "#1A2318",
-          "neutral-content": "#E8E4D9",
-          "base-100": "#10140F",
-          "base-200": "#151C14",
-          "base-300": "#1A2318",
-          "base-content": "#E8E4D9",
-          "info": "#6B8CA8",
-          "success": "#4A5D45",
-          "warning": "#C47A5A",
-          "error": "#A86B7A",
+          "primary": "#E8590C",
+          "primary-content": "#FFFFFF",
+          "secondary": "#404040",
+          "secondary-content": "#FFFFFF",
+          "accent": "#E8590C",
+          "neutral": "#F5F5F5",
+          "neutral-content": "#171717",
+          "base-100": "#FFFFFF",
+          "base-200": "#FAFAFA",
+          "base-300": "#F5F5F5",
+          "base-content": "#171717",
+          "info": "#3B82F6",
+          "success": "#22C55E",
+          "warning": "#F59E0B",
+          "error": "#EF4444",
         },
       },
     ],
     base: false,
   },
 }
-

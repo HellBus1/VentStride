@@ -1,17 +1,20 @@
 import React, { useState } from 'react'
-import { downloadCardPng, copyCardToClipboard } from '@/lib/svgToPng'
+import { CardPreviewHandle } from '@/components/CardPreview/CardPreview'
+import { downloadCardPng, copyCardToClipboard } from '@/lib/exportCard'
+import { CardConfig } from '@/types'
+import { getCardDimensions } from '@/lib/cardRenderer'
 import { DownloadSimple, Copy, Check, CircleNotch } from '@phosphor-icons/react'
 
 interface ExportButtonsProps {
-  svgRef: React.RefObject<SVGSVGElement>
-  accentColor: string
+  cardPreviewRef: React.RefObject<CardPreviewHandle>
   activityTitle: string
+  config: CardConfig
 }
 
 export const ExportButtons: React.FC<ExportButtonsProps> = ({
-  svgRef,
-  accentColor,
-  activityTitle
+  cardPreviewRef,
+  activityTitle,
+  config
 }) => {
   const [downloading, setDownloading] = useState(false)
   const [copying, setCopying] = useState(false)
@@ -19,100 +22,101 @@ export const ExportButtons: React.FC<ExportButtonsProps> = ({
   const [downloadSuccess, setDownloadSuccess] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
+  const { w, h } = getCardDimensions(config)
+
   const handleDownload = async () => {
-    if (!svgRef.current || downloading) return
+    const canvas = cardPreviewRef.current?.getCanvas()
+    if (!canvas || downloading) return
+
     setDownloading(true)
     setErrorMessage(null)
 
     try {
-      const sanitizedTitle = (activityTitle || 'activity')
+      const sanitizedTitle = (activityTitle || 'run')
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/(^-|-$)/g, '')
-      const filename = `ventstride-${sanitizedTitle || 'run'}.png`
+      const filename = `ventstride-${sanitizedTitle}-${w}x${h}.png`
 
-      await downloadCardPng(svgRef.current, filename)
+      await downloadCardPng(canvas, filename)
       setDownloadSuccess(true)
-      setTimeout(() => setDownloadSuccess(false), 2500)
+      setTimeout(() => setDownloadSuccess(false), 2000)
     } catch (err) {
       console.error('Download failed:', err)
-      setErrorMessage('Failed to generate PNG image. Please try again.')
+      setErrorMessage('Failed to generate PNG image.')
     } finally {
       setDownloading(false)
     }
   }
 
   const handleCopy = async () => {
-    if (!svgRef.current || copying) return
+    const canvas = cardPreviewRef.current?.getCanvas()
+    if (!canvas || copying) return
+
     setCopying(true)
     setErrorMessage(null)
 
     try {
-      await copyCardToClipboard(svgRef.current)
+      await copyCardToClipboard(canvas)
       setCopySuccess(true)
-      setTimeout(() => setCopySuccess(false), 2500)
+      setTimeout(() => setCopySuccess(false), 2000)
     } catch (err) {
       console.error('Copy failed:', err)
-      setErrorMessage('Clipboard copy not supported or permitted in this browser.')
+      setErrorMessage('Clipboard copy not supported in this browser.')
     } finally {
       setCopying(false)
     }
   }
 
   return (
-    <div className='flex flex-col gap-3'>
-      <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
+    <div className='flex flex-col gap-2.5'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 gap-2.5'>
         {/* Download PNG Button */}
         <button
           type='button'
           onClick={handleDownload}
           disabled={downloading}
-          className='relative group w-full py-3 px-4 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200 shadow-md hover:brightness-110 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed'
-          style={{
-            backgroundColor: accentColor,
-            color: '#10140F'
-          }}
+          className='w-full py-3 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 bg-[#E8590C] hover:bg-[#d04e0a] text-white shadow-sm transition-all active:scale-[0.98] disabled:opacity-70 cursor-pointer'
         >
           {downloading ? (
-            <CircleNotch size={18} className='animate-spin' />
+            <CircleNotch size={17} className='animate-spin' />
           ) : downloadSuccess ? (
-            <Check size={18} weight='bold' />
+            <Check size={17} weight='bold' />
           ) : (
-            <DownloadSimple size={18} weight='bold' />
+            <DownloadSimple size={17} weight='bold' />
           )}
           <span>
-            {downloadSuccess ? 'Downloaded!' : downloading ? 'Generating PNG…' : 'Download PNG'}
+            {downloadSuccess ? 'Downloaded!' : downloading ? 'Exporting...' : 'Download PNG'}
           </span>
         </button>
 
-        {/* Copy to Clipboard Button */}
+        {/* Copy Image Button */}
         <button
           type='button'
           onClick={handleCopy}
           disabled={copying}
-          className='w-full py-3 px-4 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 bg-[#151C14] border border-[#2A3828] text-[#E8E4D9] hover:bg-[#1A2318] hover:border-[#4A5D45] active:scale-[0.98] transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed'
+          className='w-full py-3 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 bg-white border border-neutral-300 text-neutral-800 hover:bg-neutral-50 transition-all active:scale-[0.98] disabled:opacity-70 cursor-pointer'
         >
           {copying ? (
-            <CircleNotch size={18} className='animate-spin text-[#DDB967]' />
+            <CircleNotch size={17} className='animate-spin text-neutral-600' />
           ) : copySuccess ? (
-            <Check size={18} weight='bold' className='text-[#DDB967]' />
+            <Check size={17} weight='bold' className='text-green-600' />
           ) : (
-            <Copy size={18} weight='bold' className='text-[#8A9986]' />
+            <Copy size={17} weight='bold' className='text-neutral-500' />
           )}
-          <span>
-            {copySuccess ? 'Copied to Clipboard!' : copying ? 'Rendering Image…' : 'Copy Image'}
-          </span>
+          <span>{copySuccess ? 'Copied!' : copying ? 'Copying...' : 'Copy Image'}</span>
         </button>
       </div>
 
-      {/* Export Specifications & Feedback */}
-      <div className='flex items-center justify-between px-1 text-[11px] text-[#8A9986]'>
-        <span>Export format: 1080 × 1920 PNG (9:16)</span>
-        <span>Story & TikTok ready</span>
+      <div className='flex items-center justify-between px-1 text-[11px] text-neutral-400 font-medium'>
+        <span>
+          {w} × {h} px ({config.ratio.toUpperCase()})
+        </span>
+        <span>{config.theme === 'overlay' ? 'Transparent Overlay' : 'Full Card PNG'}</span>
       </div>
 
       {errorMessage && (
-        <div className='p-3 bg-red-950/40 border border-red-800/60 rounded-xl text-xs text-red-300'>
+        <div className='p-2.5 bg-red-50 border border-red-200 rounded-lg text-xs text-red-600'>
           {errorMessage}
         </div>
       )}

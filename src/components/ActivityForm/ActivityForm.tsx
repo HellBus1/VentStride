@@ -7,16 +7,9 @@ interface ActivityFormProps {
   activity: ActivityInput
   onChange: (activity: ActivityInput) => void
   preset: LayoutPreset
-  accentColor: string
 }
 
-export const ActivityForm: React.FC<ActivityFormProps> = ({
-  activity,
-  onChange,
-  preset,
-  accentColor
-}) => {
-  // Convert movingTimeSec to hours, minutes, seconds for friendly inputs
+export const ActivityForm: React.FC<ActivityFormProps> = ({ activity, onChange, preset }) => {
   const hours = Math.floor(activity.movingTimeSec / 3600)
   const minutes = Math.floor((activity.movingTimeSec % 3600) / 60)
   const seconds = activity.movingTimeSec % 60
@@ -32,46 +25,40 @@ export const ActivityForm: React.FC<ActivityFormProps> = ({
   const calculatedPace = calcPace(activity.distanceKm, activity.movingTimeSec)
 
   return (
-    <form className='flex flex-col gap-5' onSubmit={(e) => e.preventDefault()}>
-      {/* Activity Title & Type */}
-      <div className='flex flex-col gap-2'>
-        <label className='text-xs font-semibold uppercase tracking-wider text-[#8A9986]'>
+    <form className='flex flex-col gap-4' onSubmit={(e) => e.preventDefault()}>
+      {/* Title */}
+      <div className='flex flex-col gap-1.5'>
+        <label className='text-xs font-semibold uppercase tracking-wider text-neutral-500'>
           Activity Title
         </label>
-        <div className='flex gap-2'>
-          <input
-            type='text'
-            value={activity.title}
-            onChange={(e) => onChange({ ...activity, title: e.target.value })}
-            placeholder='e.g. Morning Threshold Run'
-            className='flex-1 bg-[#151C14] border border-[#2A3828] rounded-xl px-3.5 py-2.5 text-sm text-[#E8E4D9] placeholder-[#5A6856] focus:outline-none focus:border-[#DDB967] transition-colors'
-            style={{
-              // @ts-expect-error custom property for dynamic focus ring
-              '--focus-color': accentColor
-            }}
-          />
-        </div>
+        <input
+          type='text'
+          value={activity.title}
+          onChange={(e) => onChange({ ...activity, title: e.target.value })}
+          placeholder='e.g. Morning Run'
+          className='w-full py-2.5 px-3.5 rounded-lg bg-neutral-50 border border-neutral-200 text-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all'
+        />
       </div>
 
       {/* Date */}
-      <div className='flex flex-col gap-2'>
-        <label className='text-xs font-semibold uppercase tracking-wider text-[#8A9986]'>
+      <div className='flex flex-col gap-1.5'>
+        <label className='text-xs font-semibold uppercase tracking-wider text-neutral-500'>
           Date
         </label>
         <input
           type='date'
           value={activity.date}
           onChange={(e) => onChange({ ...activity, date: e.target.value })}
-          className='w-full bg-[#151C14] border border-[#2A3828] rounded-xl px-3.5 py-2.5 text-sm text-[#E8E4D9] focus:outline-none focus:border-[#DDB967] transition-colors'
+          className='w-full py-2.5 px-3.5 rounded-lg bg-neutral-50 border border-neutral-200 text-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all'
         />
       </div>
 
-      {/* Primary Metrics: Distance & Moving Time */}
-      <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+      {/* Distance & Time Split */}
+      <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
         {/* Distance */}
-        <div className='flex flex-col gap-2'>
-          <label className='text-xs font-semibold uppercase tracking-wider text-[#8A9986] flex items-center justify-between'>
-            <span>Distance (km)</span>
+        <div className='flex flex-col gap-1.5'>
+          <label className='text-xs font-semibold uppercase tracking-wider text-neutral-500'>
+            Distance (km)
           </label>
           <div className='relative'>
             <input
@@ -86,21 +73,21 @@ export const ActivityForm: React.FC<ActivityFormProps> = ({
                 })
               }
               placeholder='10.00'
-              className='w-full bg-[#151C14] border border-[#2A3828] rounded-xl px-3.5 py-2.5 text-sm text-[#E8E4D9] placeholder-[#5A6856] focus:outline-none focus:border-[#DDB967] transition-colors pr-10'
+              className='w-full py-2.5 px-3.5 rounded-lg bg-neutral-50 border border-neutral-200 text-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all pr-10'
             />
-            <span className='absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-[#8A9986] font-medium pointer-events-none'>
+            <span className='absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-neutral-400 pointer-events-none'>
               km
             </span>
           </div>
         </div>
 
-        {/* Moving Time (H:M:S split) */}
-        <div className='flex flex-col gap-2'>
-          <label className='text-xs font-semibold uppercase tracking-wider text-[#8A9986] flex items-center gap-1.5'>
-            <Timer size={14} className='text-[#8A9986]' />
+        {/* Moving Time */}
+        <div className='flex flex-col gap-1.5'>
+          <label className='text-xs font-semibold uppercase tracking-wider text-neutral-500 flex items-center gap-1'>
+            <Timer size={13} />
             <span>Moving Time</span>
           </label>
-          <div className='grid grid-cols-3 gap-1.5'>
+          <div className='grid grid-cols-3 gap-1'>
             <div className='relative'>
               <input
                 type='number'
@@ -109,9 +96,9 @@ export const ActivityForm: React.FC<ActivityFormProps> = ({
                 value={hours || ''}
                 onChange={(e) => handleTimeChange(parseInt(e.target.value) || 0, minutes, seconds)}
                 placeholder='0'
-                className='w-full bg-[#151C14] border border-[#2A3828] rounded-xl px-2.5 py-2.5 text-sm text-[#E8E4D9] text-center focus:outline-none focus:border-[#DDB967] transition-colors'
+                className='w-full py-2.5 px-2 rounded-lg bg-neutral-50 border border-neutral-200 text-neutral-900 text-sm text-center focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all'
               />
-              <span className='absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-[#8A9986] pointer-events-none'>
+              <span className='absolute right-1.5 top-1/2 -translate-y-1/2 text-[10px] text-neutral-400 pointer-events-none'>
                 h
               </span>
             </div>
@@ -123,9 +110,9 @@ export const ActivityForm: React.FC<ActivityFormProps> = ({
                 value={minutes || ''}
                 onChange={(e) => handleTimeChange(hours, parseInt(e.target.value) || 0, seconds)}
                 placeholder='45'
-                className='w-full bg-[#151C14] border border-[#2A3828] rounded-xl px-2.5 py-2.5 text-sm text-[#E8E4D9] text-center focus:outline-none focus:border-[#DDB967] transition-colors'
+                className='w-full py-2.5 px-2 rounded-lg bg-neutral-50 border border-neutral-200 text-neutral-900 text-sm text-center focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all'
               />
-              <span className='absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-[#8A9986] pointer-events-none'>
+              <span className='absolute right-1.5 top-1/2 -translate-y-1/2 text-[10px] text-neutral-400 pointer-events-none'>
                 m
               </span>
             </div>
@@ -137,9 +124,9 @@ export const ActivityForm: React.FC<ActivityFormProps> = ({
                 value={seconds || ''}
                 onChange={(e) => handleTimeChange(hours, minutes, parseInt(e.target.value) || 0)}
                 placeholder='0'
-                className='w-full bg-[#151C14] border border-[#2A3828] rounded-xl px-2.5 py-2.5 text-sm text-[#E8E4D9] text-center focus:outline-none focus:border-[#DDB967] transition-colors'
+                className='w-full py-2.5 px-2 rounded-lg bg-neutral-50 border border-neutral-200 text-neutral-900 text-sm text-center focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all'
               />
-              <span className='absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-[#8A9986] pointer-events-none'>
+              <span className='absolute right-1.5 top-1/2 -translate-y-1/2 text-[10px] text-neutral-400 pointer-events-none'>
                 s
               </span>
             </div>
@@ -147,32 +134,26 @@ export const ActivityForm: React.FC<ActivityFormProps> = ({
         </div>
       </div>
 
-      {/* Calculated Pace Indicator */}
-      <div className='px-3.5 py-2.5 bg-[#151C14]/80 border border-[#2A3828]/60 rounded-xl flex items-center justify-between'>
-        <div className='flex items-center gap-2'>
-          <div className='w-2 h-2 rounded-full' style={{ backgroundColor: accentColor }} />
-          <span className='text-xs text-[#8A9986]'>Calculated Pace</span>
-        </div>
-        <span className='text-xs font-semibold text-[#E8E4D9]'>
-          {calculatedPace.formatted} <span className='text-[#8A9986] font-normal'>/km</span>
+      {/* Calculated Pace banner */}
+      <div className='p-2.5 bg-neutral-100/80 rounded-lg flex items-center justify-between text-xs'>
+        <span className='text-neutral-500 font-medium'>Auto-Calculated Pace</span>
+        <span className='font-semibold text-neutral-800'>
+          {calculatedPace.formatted} <span className='text-neutral-500 font-normal'>/km</span>
         </span>
       </div>
 
-      {/* Optional Detailed Preset Fields */}
+      {/* Detailed metrics */}
       {preset === 'detailed' && (
-        <div className='pt-3 border-t border-[#2A3828]/60 flex flex-col gap-4 animate-in fade-in duration-200'>
-          <div className='flex items-center justify-between'>
-            <span className='text-xs font-semibold uppercase tracking-wider text-[#DDB967]'>
-              Detailed Metrics
-            </span>
-          </div>
-
-          <div className='grid grid-cols-1 sm:grid-cols-3 gap-3'>
-            {/* Elevation Gain */}
-            <div className='flex flex-col gap-1.5'>
-              <label className='text-[11px] font-medium text-[#8A9986] flex items-center gap-1'>
-                <TrendUp size={13} />
-                <span>Elevation Gain</span>
+        <div className='pt-3 border-t border-neutral-200 flex flex-col gap-3'>
+          <span className='text-xs font-semibold uppercase tracking-wider text-neutral-500'>
+            Additional Metrics
+          </span>
+          <div className='grid grid-cols-1 sm:grid-cols-3 gap-2.5'>
+            {/* Elev Gain */}
+            <div className='flex flex-col gap-1'>
+              <label className='text-[11px] font-medium text-neutral-500 flex items-center gap-1'>
+                <TrendUp size={12} />
+                <span>Elev Gain</span>
               </label>
               <div className='relative'>
                 <input
@@ -185,20 +166,20 @@ export const ActivityForm: React.FC<ActivityFormProps> = ({
                       elevationGain: e.target.value ? parseInt(e.target.value) : undefined
                     })
                   }
-                  placeholder='145'
-                  className='w-full bg-[#151C14] border border-[#2A3828] rounded-xl px-3 py-2 text-sm text-[#E8E4D9] focus:outline-none focus:border-[#DDB967] transition-colors pr-7'
+                  placeholder='120'
+                  className='w-full py-2 px-3 rounded-lg bg-neutral-50 border border-neutral-200 text-neutral-900 text-xs focus:outline-none focus:ring-2 focus:ring-orange-500 pr-7'
                 />
-                <span className='absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-[#8A9986]'>
+                <span className='absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-neutral-400'>
                   m
                 </span>
               </div>
             </div>
 
-            {/* Max Elevation */}
-            <div className='flex flex-col gap-1.5'>
-              <label className='text-[11px] font-medium text-[#8A9986] flex items-center gap-1'>
-                <Compass size={13} />
-                <span>Max Elevation</span>
+            {/* Max Elev */}
+            <div className='flex flex-col gap-1'>
+              <label className='text-[11px] font-medium text-neutral-500 flex items-center gap-1'>
+                <Compass size={12} />
+                <span>Max Elev</span>
               </label>
               <div className='relative'>
                 <input
@@ -211,19 +192,19 @@ export const ActivityForm: React.FC<ActivityFormProps> = ({
                       maxElevation: e.target.value ? parseInt(e.target.value) : undefined
                     })
                   }
-                  placeholder='280'
-                  className='w-full bg-[#151C14] border border-[#2A3828] rounded-xl px-3 py-2 text-sm text-[#E8E4D9] focus:outline-none focus:border-[#DDB967] transition-colors pr-7'
+                  placeholder='240'
+                  className='w-full py-2 px-3 rounded-lg bg-neutral-50 border border-neutral-200 text-neutral-900 text-xs focus:outline-none focus:ring-2 focus:ring-orange-500 pr-7'
                 />
-                <span className='absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-[#8A9986]'>
+                <span className='absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-neutral-400'>
                   m
                 </span>
               </div>
             </div>
 
             {/* Calories */}
-            <div className='flex flex-col gap-1.5'>
-              <label className='text-[11px] font-medium text-[#8A9986] flex items-center gap-1'>
-                <Fire size={13} />
+            <div className='flex flex-col gap-1'>
+              <label className='text-[11px] font-medium text-neutral-500 flex items-center gap-1'>
+                <Fire size={12} />
                 <span>Calories</span>
               </label>
               <div className='relative'>
@@ -238,10 +219,10 @@ export const ActivityForm: React.FC<ActivityFormProps> = ({
                     })
                   }
                   placeholder='650'
-                  className='w-full bg-[#151C14] border border-[#2A3828] rounded-xl px-3 py-2 text-sm text-[#E8E4D9] focus:outline-none focus:border-[#DDB967] transition-colors pr-10'
+                  className='w-full py-2 px-3 rounded-lg bg-neutral-50 border border-neutral-200 text-neutral-900 text-xs focus:outline-none focus:ring-2 focus:ring-orange-500 pr-9'
                 />
-                <span className='absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-[#8A9986]'>
-                  kcal
+                <span className='absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-neutral-400'>
+                  cal
                 </span>
               </div>
             </div>

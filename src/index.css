@@ -3,22 +3,11 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    color-scheme: dark;
-    --brand-bg: #10140f;
-    --brand-card: #151c14;
-    --brand-surface: #1a2318;
-    --brand-border: #2a3828;
-    --brand-text: #e8e4d9;
-    --brand-muted: #8a9986;
-    --brand-gold: #ddb967;
-  }
-
   body {
-    background-color: #10140f;
-    color: #e8e4d9;
+    background-color: #fff;
+    color: #171717;
     font-family:
-      'General Sans',
+      'Plus Jakarta Sans',
       -apple-system,
       BlinkMacSystemFont,
       'Segoe UI',
@@ -28,26 +17,9 @@
     overflow-x: hidden;
   }
 
-  /* Custom input styles for clean dark UI */
   input[type='text'],
   input[type='date'],
   input[type='number'] {
-    color-scheme: dark;
+    color-scheme: light;
   }
-}
-
-/* Custom scrollbars */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #10140f;
-}
-::-webkit-scrollbar-thumb {
-  background: #2a3828;
-  border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #4a5d45;
 }

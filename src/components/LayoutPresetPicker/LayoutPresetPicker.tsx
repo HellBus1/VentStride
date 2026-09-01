@@ -5,56 +5,40 @@ import { Sparkle, Rows } from '@phosphor-icons/react'
 interface LayoutPresetPickerProps {
   preset: LayoutPreset
   onChange: (preset: LayoutPreset) => void
-  accentColor: string
 }
 
-export const LayoutPresetPicker: React.FC<LayoutPresetPickerProps> = ({
-  preset,
-  onChange,
-  accentColor
-}) => {
+export const LayoutPresetPicker: React.FC<LayoutPresetPickerProps> = ({ preset, onChange }) => {
   return (
     <div className='flex flex-col gap-2'>
-      <label className='text-xs font-semibold uppercase tracking-wider text-[#8A9986]'>
-        Card Layout
+      <label className='text-xs font-semibold uppercase tracking-wider text-neutral-500'>
+        Stats Layout
       </label>
-      <div className='grid grid-cols-2 gap-2 p-1 bg-[#151C14] border border-[#2A3828] rounded-xl'>
+      <div className='grid grid-cols-2 gap-2'>
         <button
           type='button'
           onClick={() => onChange('essential')}
-          className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 ${
+          className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-xs font-medium border transition-all ${
             preset === 'essential'
-              ? 'bg-[#1A2318] text-[#E8E4D9] shadow-sm border border-[#2A3828]'
-              : 'text-[#8A9986] hover:text-[#E8E4D9] hover:bg-[#1A2318]/50'
+              ? 'border-neutral-900 bg-neutral-900 text-white'
+              : 'border-neutral-200 text-neutral-600 hover:border-neutral-400'
           }`}
-          style={preset === 'essential' ? { borderColor: `${accentColor}40` } : {}}
         >
-          <Sparkle
-            weight={preset === 'essential' ? 'fill' : 'regular'}
-            size={16}
-            style={{ color: preset === 'essential' ? accentColor : undefined }}
-          />
+          <Sparkle weight={preset === 'essential' ? 'fill' : 'regular'} size={15} />
           <span>Essential</span>
-          <span className='text-[10px] opacity-60 ml-0.5'>(3 Stats)</span>
+          <span className='opacity-50 text-[10px]'>3</span>
         </button>
-
         <button
           type='button'
           onClick={() => onChange('detailed')}
-          className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 ${
+          className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-xs font-medium border transition-all ${
             preset === 'detailed'
-              ? 'bg-[#1A2318] text-[#E8E4D9] shadow-sm border border-[#2A3828]'
-              : 'text-[#8A9986] hover:text-[#E8E4D9] hover:bg-[#1A2318]/50'
+              ? 'border-neutral-900 bg-neutral-900 text-white'
+              : 'border-neutral-200 text-neutral-600 hover:border-neutral-400'
           }`}
-          style={preset === 'detailed' ? { borderColor: `${accentColor}40` } : {}}
         >
-          <Rows
-            weight={preset === 'detailed' ? 'bold' : 'regular'}
-            size={16}
-            style={{ color: preset === 'detailed' ? accentColor : undefined }}
-          />
+          <Rows weight={preset === 'detailed' ? 'bold' : 'regular'} size={15} />
           <span>Detailed</span>
-          <span className='text-[10px] opacity-60 ml-0.5'>(6 Stats)</span>
+          <span className='opacity-50 text-[10px]'>6</span>
         </button>
       </div>
     </div>

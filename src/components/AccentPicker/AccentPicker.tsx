@@ -9,18 +9,17 @@ interface AccentPickerProps {
 
 export const AccentPicker: React.FC<AccentPickerProps> = ({ selectedHex, onChange }) => {
   return (
-    <div className='flex flex-col gap-2.5'>
+    <div className='flex flex-col gap-2'>
       <div className='flex items-center justify-between'>
-        <label className='text-xs font-semibold uppercase tracking-wider text-[#8A9986]'>
-          Card Accent Color
+        <label className='text-xs font-semibold uppercase tracking-wider text-neutral-500'>
+          Accent Color
         </label>
-        <span className='text-[11px] text-[#8A9986] font-medium'>
+        <span className='text-[11px] text-neutral-400 font-medium'>
           {ACCENT_COLORS.find((c) => c.hex.toLowerCase() === selectedHex.toLowerCase())?.name ||
             'Custom'}
         </span>
       </div>
-
-      <div className='grid grid-cols-6 gap-2 p-2 bg-[#151C14] border border-[#2A3828] rounded-xl'>
+      <div className='flex gap-2'>
         {ACCENT_COLORS.map((color) => {
           const isSelected = color.hex.toLowerCase() === selectedHex.toLowerCase()
           return (
@@ -28,24 +27,20 @@ export const AccentPicker: React.FC<AccentPickerProps> = ({ selectedHex, onChang
               key={color.id}
               type='button'
               onClick={() => onChange(color.hex)}
-              title={`${color.name}: ${color.desc}`}
-              className={`group relative aspect-square rounded-lg flex items-center justify-center transition-all duration-200 ${
+              title={color.name}
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
                 isSelected
-                  ? 'ring-2 ring-offset-2 ring-offset-[#10140F] scale-105 shadow-md'
-                  : 'hover:scale-105 opacity-80 hover:opacity-100'
+                  ? 'ring-2 ring-offset-2 ring-neutral-900 scale-110'
+                  : 'hover:scale-110 opacity-80 hover:opacity-100'
               }`}
-              style={{
-                backgroundColor: color.hex,
-                // @ts-expect-error Tailwind ring color custom prop
-                '--tw-ring-color': color.hex
-              }}
+              style={{ backgroundColor: color.hex }}
             >
               {isSelected && (
                 <Check
                   weight='bold'
-                  size={16}
+                  size={14}
                   className={
-                    color.id === 'chalk' ? 'text-[#10140F]' : 'text-[#10140F] drop-shadow-sm'
+                    color.id === 'chalk' ? 'text-neutral-700' : 'text-white drop-shadow-sm'
                   }
                 />
               )}
